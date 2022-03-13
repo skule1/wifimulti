@@ -23,23 +23,22 @@ void setup() {
 
   if (WiFiMulti.run(connectTimeoutMs) == WL_CONNECTED) {
     Serial.print("WiFi connected: ");
-    Serial.print(WiFi.SSID());
-    Serial.print(" ");
+    Serial.println(WiFi.SSID());
+    Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
+    long rssi = WiFi.RSSI();
+    Serial.print("signal strength (RSSI):");
+    Serial.print(rssi);
+    if (rssi > -65) Serial.println(" - Very Good");
+    else if ((rssi < -64) && (rssi > -75)) Serial.println(" - Good");
+    else if ((rssi < -74) && (rssi < -85)) Serial.println(" - Low");
+    else if (rssi < -84) Serial.println(" - Very low");
   } else {
     Serial.println("WiFi not connected!");
   }
   Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
-  long rssi = WiFi.RSSI();
-  Serial.print("signal strength (RSSI):");
-  Serial.println(rssi);
-  if (rssi > -65) Serial.println(" Very Good");
-  else   if ((rssi < -64) && (rssi > -75)) Serial.println(" Good");
-  else   if ((rssi < -74) && (rssi < -85)) Serial.println(" Low");
-  else   if (rssi < -84) Serial.println(" Very low");
+
+
 
 }
 
