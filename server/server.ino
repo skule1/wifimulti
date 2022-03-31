@@ -9,6 +9,8 @@ ESP8266WiFiMulti WiFiMulti;
 #endif
 
 const uint32_t connectTimeoutMs = 5000;
+WiFiServer server(50);
+WiFiClient client;
 
 #include "wificred.h"
 // creditals for the wifi networks.
@@ -38,11 +40,25 @@ void setup() {
   }
   Serial.println("");
 
-
+  server.begin();
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  client = server.available();   // listen for incoming clients
+  if (client) {                             // if you get a client,
+    Serial.println("New Client.");           // print a message out the serial port
+    while (client.connected() > 0) {
+      if (client.available()) {             // if there's bytes to read from the client,
+        String  line1 = client.readStringUntil('\r');           // read a byte, then
+        Serial.println(line1);
+      };
+      if (Serial.available() > 0) {           // if there's bytes to read from the client,
+        String line2 = Serial.readStringUntil('\r');           // read a byte, then
+        client.print(line2);                    // print it out the serial monitor
+      }
+    }
+    client.stop();
+    Serial.println("Client Disconnected.");
 
-}
+  }}
